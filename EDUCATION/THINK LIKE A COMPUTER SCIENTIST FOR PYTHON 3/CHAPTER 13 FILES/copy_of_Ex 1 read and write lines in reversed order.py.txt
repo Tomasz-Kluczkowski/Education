@@ -1,0 +1,20 @@
+0000 def reverse_lines(oldfile, newfile):
+0001     """ Reads all lines of the oldfile and writes a newfiles with lines in reversed order. """
+0002     input_handle = open(oldfile)
+0003     line_list = input_handle.readlines()  # read all lines and create a list of them
+0004     input_handle.close()
+0005 
+0006     if "\n" not in line_list[len(line_list)-1]: # check if there is a next line character after the last line to avoid joining lines after reversing order of the list
+0007         line_list[len(line_list)-1] += "\n"     # add missing next line character to the last element of the list
+0008 
+0009     line_list.reverse()             # reverse order of lines
+0010 
+0011     output_handle = open(newfile, "w")
+0012 
+0013     for line in line_list:
+0014         output_handle.write(line)
+0015 
+0016     output_handle.close()
+0017 
+0018 
+0019 reverse_lines("friends.txt", "friends_reversed.txt")
