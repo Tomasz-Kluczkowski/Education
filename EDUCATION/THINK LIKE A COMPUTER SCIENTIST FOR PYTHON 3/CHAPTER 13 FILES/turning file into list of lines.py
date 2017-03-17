@@ -1,4 +1,4 @@
-f = open("friends.txt", "r")
+f = open("friends.txt", "r", encoding="UTF8")
 xs = f.readlines()
 f.close()
 
