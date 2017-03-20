@@ -44,8 +44,6 @@ base_url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&units=met
 
 # file_handle = open("weather_dict.txt", "w")
 
-
-
 response = requests.get(base_url + api_key)
 weather_dict = response.json()
 # file_handle.writelines()
