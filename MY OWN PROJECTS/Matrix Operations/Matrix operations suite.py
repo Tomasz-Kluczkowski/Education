@@ -15,33 +15,49 @@ import sys
 
 
 class Matrix:
-    """ Generates empty square matrix of given size. No subcells get generated initially. Provides methods to operate on matrices """
-    array = []
+    """ Generates square matrix of given size.
+    Provides methods to operate on matrices """
 
-    def __init__(self, size):
+    def __init__(self, size, fill=False):
+        """If fill parameter is True then fill matrix with zeros"""
 
         self.size = size
+        self.matrix = []
+
+        if fill == True:
+            for row in range(self.size):
+                self.matrix.append([])
+                for col in range(size):
+                    self.matrix[row].append(0)
+
+
+
 
 
     def __str__(self):
-        return "{0}".format(self.array)
-
-
-
-    def m_generator(self, low_boundary, upp_boundary):
-        '''Generates a square matrix of size filled with random numbers from low_boundary to upp_boundary'''
-        import  random
-        rng = random.Random()       # create object to invoke random methods on
-
+        matrix_str = ""
         for row in range(self.size):
-
-            Matrix.array.append([])            # add row to the matrix
-
             for col in range(self.size):
+                matrix_str += "{0} ".format(self.matrix[row][col])
+            matrix_str += "\n"
+        return matrix_str
 
-                Matrix.array[row].append(rng.randrange(low_boundary, upp_boundary))    #add elements to the row being iterated
 
-        return Matrix.array
+
+    # def m_generator(self, low_boundary, upp_boundary):
+    #     '''Generates a square matrix of size filled with random numbers from low_boundary to upp_boundary'''
+    #     import  random
+    #     rng = random.Random()       # create object to invoke random methods on
+    #
+    #     for row in range(self.size):
+    #
+    #         Matrix.array.append([])            # add row to the matrix
+    #
+    #         for col in range(self.size):
+    #
+    #             Matrix.array[row].append(rng.randrange(low_boundary, upp_boundary))    #add elements to the row being iterated
+    #
+    #     return Matrix.array
 
 
     def calc_det(self):
@@ -59,8 +75,8 @@ class Matrix:
 
         for i in range(1,len(self)):    # swap rows
 
-                row = self[i][0:col]+self[i][col+1:]
-                sub_m.append(row)
+            row = self[i][0:col]+self[i][col+1:]
+            sub_m.append(row)
 
         return sub_m
 
@@ -87,23 +103,13 @@ class Matrix:
         return det
 
 
-def test(actual, expected):
-    """ Compare the actual to the expected value,
-        and print a suitable message.
-    """
-    linenum = sys._getframe(1).f_lineno   # Get the caller's line number.
-    if (expected == actual):
-        msg = "Test on line {0} passed.".format(linenum)
-    else:
-        msg = ("Test on line {0} failed. Expected '{1}', but got '{2}'."
-                .format(linenum, expected, actual))
-    print(msg)
 
 
-macierz1 = Matrix(3)
-macierz2 = Matrix(3)
 
-macierz1.m_generator(1, 10)
+# macierz1 = Matrix(3)
+# macierz2 = Matrix(3)
+#
+# macierz1.m_generator(1, 10)
 
 
 ##def test_suite():
@@ -115,3 +121,7 @@ macierz1.m_generator(1, 10)
 ##
 ##test_suite()        # Here is the call to run the tests
 ##print(calc_det_n_dim(m_generator(10, 1, 11)))
+
+m1 = Matrix(3, True)
+print(m1.matrix)
+print(m1)

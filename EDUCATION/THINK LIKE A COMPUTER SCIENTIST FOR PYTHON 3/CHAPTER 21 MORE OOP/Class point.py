@@ -18,10 +18,14 @@ class Point:
         """Scalar multiplication"""
         return Point(other * self.x, other * self.y)
 
+    def reverse(self):
+         (self.x, self.y) = (self.y, self.x)
+         return self
 
 p1 = Point(3, 4)
 p2 = Point(5, 7)
 print(p1 * p2)
 print(2 * p2)
+print(p1.reverse())
 
 
