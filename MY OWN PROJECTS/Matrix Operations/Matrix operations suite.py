@@ -2,21 +2,24 @@ from unit_testing import test
 
 
 class Matrix:
-    """ Generates square matrix of given size.
-    Provides methods to operate on matrices """
+    """Use this class for creating and operating on matrices"""
 
-    def __init__(self, rows=1, cols=1, fill=False):
-        """If fill parameter is True then fill matrix with zeros"""
+    def __init__(self, rows=1, cols=1, fill=False, matrix=None):
+        # TODO set arguments as matrix=None, rows=1, cols=1, fill=False.
+        #  Then if matrix is given all the rest of the arguments can be empty
+        #  and rows/cols can be obtained from the list given as matrix.
+        """Create a Matrix class object of size rows x cols.
+        If parameter matrix is given as a list use that for the array values.
+        Alternatively if fill is True fill the array with zeroes."""
 
         self.rows = rows
         self.cols = cols
-        self.matrix = []
+        if matrix == None:
+            self.matrix = []
+        elif isinstance(matrix, list):
+            self.matrix = matrix
 
         if fill == True:
-            # for row in range(self.rows):
-            #     self.matrix.append([])
-            #     for col in range(cols):
-            #         self.matrix[row].append(0)
             self.matrix = [[0 for col in range(self.cols)] for row in range(self.rows)]
 
     def __getitem__(self, index):
@@ -80,13 +83,6 @@ class Matrix:
         sub_m.matrix = [self[row][0:col] + self[row][col + 1:] for row in range(1, len(self))]
         return sub_m
 
-    @classmethod
-    def from_list(cls, matrix):
-    self.matrix = sub_m
-
-# TODO
-# 1 create alternative constructor as a class method.
-# If I want to use self written matrix and turn it into Matrix class
 
 
 
@@ -101,7 +97,7 @@ class Matrix:
 ##test_suite()        # Here is the call to run the tests
 ##print(calc_det_n_dim(m_generator(10, 1, 11)))
 
-m1 = Matrix(2, 2, True)
+m1 = Matrix(2,2,True)
 print(m1.matrix)
 print(m1)
 
@@ -119,3 +115,6 @@ print(m1.det())
 print(m1.matrix)
 print(type(m1.matrix))
 print(m1.max())
+
+m2 = Matrix(3,3,False,[[1,2,3],[3,6,8],[6,9,10]])
+print(m2)
