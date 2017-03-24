@@ -39,6 +39,7 @@ Don't like Celsius? Add &units=imperial to the end of the URL of the API to rece
 
 import requests
 
+
 api_key = "fa730d41d41ae83226a227a150d927ac"
 base_url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&units=metric&APPID="
 
