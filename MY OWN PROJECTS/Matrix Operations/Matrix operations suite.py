@@ -1,22 +1,23 @@
 from unit_testing import test
 
+
 class Matrix:
     """ Generates square matrix of given size.
     Provides methods to operate on matrices """
 
-    def __init__(self, rows, cols, fill=False):
+    def __init__(self, rows=1, cols=1, fill=False):
         """If fill parameter is True then fill matrix with zeros"""
 
         self.rows = rows
         self.cols = cols
-
         self.matrix = []
 
         if fill == True:
-            for row in range(self.rows):
-                self.matrix.append([])
-                for col in range(cols):
-                    self.matrix[row].append(0)
+            # for row in range(self.rows):
+            #     self.matrix.append([])
+            #     for col in range(cols):
+            #         self.matrix[row].append(0)
+            self.matrix = [[0 for col in range(self.cols)] for row in range(self.rows)]
 
     def __getitem__(self, index):
         return self.matrix[index]
@@ -24,86 +25,70 @@ class Matrix:
     def __setitem__(self, index, value):
         self.matrix[index] = value
 
+    def append(self, item):
+        return self.matrix.append(item)
+
     def __len__(self):
         return len(self.matrix)
 
+    def max(self):
+
+        return max(max(item) if isinstance(item, list) else item for item in self.matrix)
+
     def __str__(self):
+        length_of_max_value = len(str(self.max()))
         matrix_str = ""
         for row in range(self.rows):
             for col in range(self.cols):
-                matrix_str += "{0} ".format(self.matrix[row][col])
+                matrix_str += "{0:<{width}} ".format(self.matrix[row][col], width=length_of_max_value)
             matrix_str += "\n"
         return matrix_str
 
+    def rng_matrix_fill(self, low_boundary, upp_boundary):
+        '''Fill existing Matrix object with random numbers from low_boundary to upp_boundary-1'''
+        import  random
+        rng = random.Random()
+        self.matrix = [[rng.randrange(low_boundary, upp_boundary)
+                      for col in range(self.cols)] for row in range(self.rows)]
 
-
-    # def m_generator(self, low_boundary, upp_boundary):
-    #     '''Generates a square matrix of size filled with random numbers from low_boundary to upp_boundary'''
-    #     import  random
-    #     rng = random.Random()       # create object to invoke random methods on
-    #
-    #     for row in range(self.size):
-    #
-    #         Matrix.array.append([])            # add row to the matrix
-    #
-    #         for col in range(self.size):
-    #
-    #             Matrix.array[row].append(rng.randrange(low_boundary, upp_boundary))    #add elements to the row being iterated
-    #
-    #     return Matrix.array
-
-
-    def calc_det_2x2(self):
+    def det_2x2(self):
         """calculates determinant of the 2x2 matrix m"""
+        determinant = self[0][0] * self[1][1] - (self[0][1] * self[1][0])
+        return determinant
 
-        det = self[0][0] * self[1][1] - (self[0][1] * self[1][0])
+    def det(self):
+        """calculate determinant of the matrix m """
+        if self.rows != self.cols:
+            print("Unable to calculate determinant. Rows != Cols")
+            return None
 
-        return det
+        determinant = 0
 
+        if len(self) == 1:  # solution for the trivial example of matrix 1x1
+            determinant = self[0][0]
+        elif len(self) == 2:  # solution for matrix 2x2
+            determinant = self.det_2x2()
+        elif len(self) > 2:  # recursive solution (laplace's expansion) for any matrix of size above 2
+            for col in range(len(self)):
+                determinant += ((-1) ** (2 + col)) * self[0][col] * self.sub_matrix(col).det()
+        return determinant
 
     def sub_matrix(self, col):
         """creates a submatrix (minor) of m for the calculation of the determinant
         by removing top row 0 and column col"""
-
-        sub_m = []
-
-        for i in range(1,len(self)):    # swap rows
-
-            row = self[i][0:col]+self[i][col+1:]
-            sub_m.append(row)
-
+        sub_m = Matrix()
+        sub_m.matrix = [self[row][0:col] + self[row][col + 1:] for row in range(1, len(self))]
         return sub_m
 
+    @classmethod
+    def from_list(cls, matrix):
+    self.matrix = sub_m
 
-    def det(self):
-        """calculate determinant of the matrix m """
-
-        determinant = 0
-
-        if len(self) == 1:             # solution for the trivial example of matrix 1x1
-
-            determinant = self[0][0]
-
-        elif len(self) == 2:           # solution for matrix 2x2
-
-            determinant = calc_det_2x2(self)
-
-        elif len(self) > 2:            # recursive solution (laplace's expansion) for any matrix of size above 2
-
-            for col in range(len(self)):
-
-                determinant += ((-1) **  (2 + col)) * self[0][col] * det(sub_matrix(self, col))
-
-        return determinant
+# TODO
+# 1 create alternative constructor as a class method.
+# If I want to use self written matrix and turn it into Matrix class
 
 
-
-
-
-# macierz1 = Matrix(3)
-# macierz2 = Matrix(3)
-#
-# macierz1.m_generator(1, 10)
 
 
 ##def test_suite():
@@ -116,12 +101,21 @@ class Matrix:
 ##test_suite()        # Here is the call to run the tests
 ##print(calc_det_n_dim(m_generator(10, 1, 11)))
 
-m1 = Matrix(3,3, True)
+m1 = Matrix(2, 2, True)
 print(m1.matrix)
 print(m1)
 
-print(m1[0][1])
-m1[0][1] = 2
+print(m1[0][0])
+m1[0][0] = 2
 print(m1)
 
+print("Determinant of m1 is = {0}".format(m1.det()))
+
+m1 = Matrix(3,3)
+m1.rng_matrix_fill(0,150)
+print(m1)
 print(m1.det())
+
+print(m1.matrix)
+print(type(m1.matrix))
+print(m1.max())
