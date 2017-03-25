@@ -4,20 +4,22 @@ from unit_testing import test
 class Matrix:
     """Use this class for creating and operating on matrices"""
 
-    def __init__(self, rows=1, cols=1, fill=False, matrix=None):
-        # TODO set arguments as matrix=None, rows=1, cols=1, fill=False.
-        #  Then if matrix is given all the rest of the arguments can be empty
-        #  and rows/cols can be obtained from the list given as matrix.
+    def __init__(self, matrix, rows=1, cols=1, fill=False):
         """Create a Matrix class object of size rows x cols.
+        If matrix = None, create and empty list as matrix.
         If parameter matrix is given as a list use that for the array values.
+        Then rows and cols is taken from the matrix size.
         Alternatively if fill is True fill the array with zeroes."""
 
-        self.rows = rows
-        self.cols = cols
+
         if matrix == None:
             self.matrix = []
+            self.rows = rows
+            self.cols = cols
         elif isinstance(matrix, list):
             self.matrix = matrix
+            self.rows = len(matrix)
+            self.cols = len(matrix[0])
 
         if fill == True:
             self.matrix = [[0 for col in range(self.cols)] for row in range(self.rows)]
@@ -79,7 +81,7 @@ class Matrix:
     def sub_matrix(self, col):
         """creates a submatrix (minor) of m for the calculation of the determinant
         by removing top row 0 and column col"""
-        sub_m = Matrix()
+        sub_m = Matrix(None)
         sub_m.matrix = [self[row][0:col] + self[row][col + 1:] for row in range(1, len(self))]
         return sub_m
 
@@ -97,7 +99,7 @@ class Matrix:
 ##test_suite()        # Here is the call to run the tests
 ##print(calc_det_n_dim(m_generator(10, 1, 11)))
 
-m1 = Matrix(2,2,True)
+m1 = Matrix(None,2, 2, True)
 print(m1.matrix)
 print(m1)
 
@@ -107,7 +109,7 @@ print(m1)
 
 print("Determinant of m1 is = {0}".format(m1.det()))
 
-m1 = Matrix(3,3)
+m1 = Matrix(None, 3,3)
 m1.rng_matrix_fill(0,150)
 print(m1)
 print(m1.det())
@@ -116,5 +118,5 @@ print(m1.matrix)
 print(type(m1.matrix))
 print(m1.max())
 
-m2 = Matrix(3,3,False,[[1,2,3],[3,6,8],[6,9,10]])
+m2 = Matrix([[1,2,3],[3,6,8],[6,9,10]], 3,3,False)
 print(m2)
