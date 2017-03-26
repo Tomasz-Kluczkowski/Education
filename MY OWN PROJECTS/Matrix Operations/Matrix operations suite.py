@@ -50,9 +50,11 @@ class Matrix:
         return matrix_str
 
     def __add__(self, other):
-        return [(self.matrix[row][col]+other.matrix[row][col])
-                for row in range(self.rows)
-                for col in range(self.cols)]
+        result = [[0 for col in range(self.cols)] for row in range(self.rows)]
+        for row in range(self.rows):
+            for col in range(self.cols):
+                result[row][col] = self.matrix[row][col]+other.matrix[row][col]
+        return result
 
 
     def rng_matrix_fill(self, low_boundary, upp_boundary):
@@ -127,6 +129,6 @@ print(m1.max())
 m2 = Matrix([[1,2,3],[3,6,8],[6,9,10]], 3,3,False)
 print(m2)
 
-m3 = [[1,2],[3,4]]
-m4 = [[3,5],[5,3]]
+m3 = Matrix([[1,2],[3,4]])
+m4 = Matrix([[3,5],[5,3]])
 print(m3+m4)
