@@ -5,7 +5,7 @@ class LinkedList:
         self.head = None
 
     def print_backward(self):
-        print("[", end=" ")
+        print("[", end="")
         if self.head is not None:
             self.head.print_backward()
         print("]")
@@ -15,6 +15,16 @@ class LinkedList:
         node.next = self.head
         self.head = node
         self.length += 1
+
+    def print_list(self):
+        print("[", end="")
+        while self.head is not None:
+            print(self.head, end="")
+            self.head = self.head.next
+            if self.head is not None:
+                print(", ", end="")
+        print("]", end="")
+        print()
 
 class Node:
     def __init__(self, cargo=None, next=None):
@@ -27,21 +37,25 @@ class Node:
         return str(self.cargo)
 
     def print_backward(self):
-        if self.next is not None:
-            tail = self.next
-            tail.print_backward()
-        print(self.cargo, end=" ")
+        first_node = self
+        if self.next is not None: #if not last item which does not have next defined
+            tail = self.next      #move to the next item, print nothing
+            tail.print_backward() #call to print tail recursively until we reach
+        print(self.cargo, end=" ") #print item with no next defined
+        if self is not first_node:
+            print(",", end=" ")
 
 linklist = LinkedList()
 node1 = Node(1)
 node1.print_backward()
+linklist.add_first(3)
+linklist.add_first(2)
+linklist.add_first(1)
 linklist.print_backward()
+linklist.print_list()
 
-# def print_list(node):
-#     while node is not None:
-#         print(node, end=" ")
-#         node = node.next
-#     print()
+
+
 #
 # def remove_second(list):
 #     if list is None: return
