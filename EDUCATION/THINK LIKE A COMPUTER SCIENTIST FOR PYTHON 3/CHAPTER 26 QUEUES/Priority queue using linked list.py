@@ -100,8 +100,6 @@ pr_qu_linked.insert(5)
 pr_qu_linked.insert(50)
 pr_qu_linked.insert(1)
 
-
-
 t1 = datetime.datetime.now()
 
 while not pr_qu_linked.is_empty():
