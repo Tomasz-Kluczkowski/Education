@@ -11,17 +11,22 @@ class Tree:
 
 def yes(ques):
     ans = input(ques).lower()
-    return ans[0] == "y"
+    try:
+        return ans[0] == "y"
+    except IndexError:
+        yes(ques)
 
 def animal():
     #start with already gained knowledge from previous questions
     try:
         root = record_tree_to_file.file_to_tree("animal_data.txt")
+        record_tree_to_file.print_tree_indented(root)
     except FileNotFoundError:
         root = Tree("bird")
 #loop until user quits
     while True:
         print()
+        print(record_tree_to_file.from_tree_to_list(root))
         if not yes("Are you thinking of an animal? "): break
 
         # walk the tree
@@ -56,6 +61,7 @@ def animal():
             tree.left = Tree(animal)
             tree.right = Tree(guess)
     # store gained knowledge for future use
-    record_tree_to_file.tree_to_file(tree, "animal_data.txt")
+    record_tree_to_file.tree_to_file(root, "animal_data.txt")
+    record_tree_to_file.print_tree_indented(root)
 
 animal()

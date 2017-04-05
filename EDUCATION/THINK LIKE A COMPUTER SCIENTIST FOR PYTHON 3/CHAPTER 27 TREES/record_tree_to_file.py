@@ -21,6 +21,8 @@ def from_list_to_tree(cargo_list):
             args.append(Tree(cargo_list[i]))
     except IndexError:
         pass
+    if cargo_list == []:
+        cargo_list.append(None)
 
     root = Tree(cargo_list[0], *args)
     del cargo_list[0:3]
@@ -33,7 +35,10 @@ def from_list_to_tree(cargo_list):
                 del bot_level[0]
                 continue
             tree.left = Tree(cargo_list[0])
-            tree.right = Tree(cargo_list[1])
+            try:
+                tree.right = Tree(cargo_list[1])
+            except IndexError:
+                tree.right = Tree(None)
             del cargo_list[0:2]
             bot_level.append(tree.left)
             bot_level.append(tree.right)
@@ -69,7 +74,7 @@ def tree_to_file(tree, filename):
 def file_to_tree(file):
     with open(file, "r") as file:
         cargo_list = file.readlines()
-        cargo_list =  [item.rstrip("\n") for item in cargo_list]
+        cargo_list = [item.rstrip("\n") for item in cargo_list]
         print(cargo_list)
     return from_list_to_tree(cargo_list)
 
@@ -88,3 +93,5 @@ def file_to_tree(file):
 # file_tree = file_to_tree("tree.txt")
 #
 # print_tree_indented(file_tree)
+
+# tree = from_list_to_tree(['can it bark', 'can it sting', 'dog', 'bird', 'moskito'])
