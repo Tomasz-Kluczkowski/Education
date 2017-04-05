@@ -57,6 +57,8 @@ def create_token_list(expr):
                 pass
             token_list.append(token)
     return token_list
+def missing_operator():
+    pass
 
 def get_token(token_list, expected):
     if token_list[0] == expected:
@@ -80,7 +82,20 @@ def get_product(token_list):
     a = get_number(token_list)
     if get_token(token_list, "*"):
         b = get_product(token_list)
+        if a is None or b is None:
+            raise ValueError("Missing operand in expression")
         return Tree("*", a, b)
+    try:
+        if type(a.cargo) is int and ((type(token_list[0]) is int) or (token_list[0] is "(")):
+            raise TypeError("Missing operator in expression")
+        if (token_list[0] is ")") and (len(token_list) > 1) and (type(token_list[1]) is int):
+            raise TypeError("Missing operator in expression")
+        if (token_list[0] is ")") and (len(token_list) > 1) and (token_list[1] is "("):
+            raise TypeError("Missing operator in expression")
+        if (token_list[0] is "(") and (len(token_list) > 1) and (token_list[1] is ")"):
+            raise ValueError("Missing operand in expression")
+    except AttributeError:
+        raise ValueError("Missing operand in expression")
     return a
 
 def get_sum(token_list):
@@ -113,26 +128,7 @@ tree = get_sum(token_list)
 print_tree_postorder(tree)
 print()
 
-token_list = create_token_list("9 * (11 + 5 * 7")
+token_list = create_token_list("9 * (11 + 5) * (7 + 9)")
 print(token_list)
 tree = get_sum(token_list)
 print_tree_postorder(tree)
-
-
-
-
-#
-# tree = Tree("+", Tree(1), Tree("*", Tree(2), Tree(3)))
-# print_tree_preorder(tree)
-# print()
-# print_tree_postorder(tree)
-# print()
-# print_tree_indented(tree)
-#
-# expression = "(3 + 7) * 9"
-# expr_list = create_token_list(expression)
-# print(expr_list)
-#
-# # def total(tree):
-# #     if tree is None: return 0
-# #     return total(tree.left) + total(tree.right) + tree.cargo

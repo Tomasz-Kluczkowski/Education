@@ -29,10 +29,25 @@ def print_tree_postorder(tree):
 
 #inorder print - infix (natural math notation)
 def print_tree_inorder(tree):
+    operations = ["+", "-", "*", "/"]
     if tree is None: return
+    try:
+        if type(tree.left.cargo) is int or tree.left.cargo in operations:
+            print("(", end="")
+        # elif tree.left.cargo in operations:
+        #     print("(", end="")
+    except AttributeError:
+        pass
     print_tree_inorder(tree.left)
-    print(tree.cargo, end = " ")
+    print(tree.cargo, end = "")
     print_tree_inorder(tree.right)
+    try:
+        if type(tree.right.cargo) is int or tree.right.cargo in operations:
+            print(")", end="")
+        # elif tree.right.cargo in operations:
+        #     print(")", end="")
+    except AttributeError:
+        pass
 
 def print_tree_indented(tree, level=0):
     if tree is None: return
@@ -48,8 +63,10 @@ def create_token_list(expr):
     token_list = [token for token in token_list if token not in ["", " "]]
     return token_list
 
-tree = Tree("+", Tree(1), Tree("*", Tree(2), Tree(3)))
+tree = Tree("+", Tree("+", Tree(1), Tree(2)), Tree("*", Tree(1), Tree(2)))
 print_tree_preorder(tree)
+print()
+print_tree_inorder(tree)
 print()
 print_tree_postorder(tree)
 print()
