@@ -1,4 +1,4 @@
-import record_tree_to_file
+import record_tree_to_file_animal
 
 class Tree:
     def __init__(self, cargo, left=None, right=None):
@@ -19,14 +19,14 @@ def yes(ques):
 def animal():
     #start with already gained knowledge from previous questions
     try:
-        root = record_tree_to_file.file_to_tree("animal_data.txt")
-        record_tree_to_file.print_tree_indented(root)
+        root = record_tree_to_file_animal.file_to_tree("animal_data.txt")
+        record_tree_to_file_animal.print_tree_indented(root)
     except FileNotFoundError:
         root = Tree("bird")
 #loop until user quits
     while True:
         print()
-        print(record_tree_to_file.from_tree_to_list(root))
+        print(record_tree_to_file_animal.from_tree_to_list(root))
         if not yes("Are you thinking of an animal? "): break
 
         # walk the tree
@@ -61,7 +61,7 @@ def animal():
             tree.left = Tree(animal)
             tree.right = Tree(guess)
     # store gained knowledge for future use
-    record_tree_to_file.tree_to_file(root, "animal_data.txt")
-    record_tree_to_file.print_tree_indented(root)
+    record_tree_to_file_animal.tree_to_file(root, "animal_data.txt")
+    record_tree_to_file_animal.print_tree_indented(root)
 
 animal()
