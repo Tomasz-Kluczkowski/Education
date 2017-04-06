@@ -31,18 +31,20 @@ def from_list_to_tree(cargo_list):
     while len(cargo_list) > 0:
         copy = bot_level[:]
         for t in copy:
-            if cargo_list[0] is None:
+            print(type(cargo_list[0]))
+            print(cargo_list[0])
+            if cargo_list[0] == "None":
                 t.left = None
             else:
                 t.left = Tree(cargo_list[0])
+                bot_level.append(t.left)
 
-            if cargo_list[1] is None:
+            if cargo_list[1] == "None":
                 t.right = None
             else:
                 t.right = Tree(cargo_list[1])
+                bot_level.append(t.right)
             del cargo_list[0:2]
-            bot_level.append(t.left)
-            bot_level.append(t.right)
             del bot_level[0]
     return root
 
@@ -66,7 +68,7 @@ def from_tree_to_list(tree):
 
 
 def tree_to_file(tree, filename):
-    with open(filename, "a") as file:
+    with open(filename, "w") as file:
         cargo_list = from_tree_to_list(tree)
         for item in cargo_list:
             file.write(str(item) + "\n")
@@ -78,6 +80,7 @@ def file_to_tree(file):
         cargo_list = [item.rstrip("\n") for item in cargo_list]
         print(cargo_list)
     return from_list_to_tree(cargo_list)
+
 
 # TESTS FO THIS MODULE:
 # # [1, 2,3, 4,5,6,7, 8,9,10,11,12,13,14,15]
@@ -95,11 +98,12 @@ def file_to_tree(file):
 #
 # print_tree_indented(file_tree)
 
-# tree = from_list_to_tree(['can it bark', 'can it sting', 'dog', 'bird', 'moskito'])
+# tree = from_list_to_tree(['can it bark', 'can it sting', 'dog', 'bird', 'mosquito'])
 #
 # tree = Tree(1, Tree(2), Tree(3))
 # cargo_list = from_tree_to_list(tree)
 # print(cargo_list)
 #
-# new_tree = from_list_to_tree(cargo_list)
+# new_tree = from_list_to_tree(['does it bark', 'can it sting', 'dog', 'bird', 'mosquito', 'None', 'None', 'None',
+#                               'None', 'None', 'None'])
 # print_tree_indented(new_tree)

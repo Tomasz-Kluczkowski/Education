@@ -9,17 +9,17 @@ def yes(ques):
     except IndexError:
         yes(ques)
 
+
 def animal():
-    #start with already gained knowledge from previous questions
+    # start with already gained knowledge from previous questions
     try:
         root = record_tree_to_file_animal.file_to_tree("animal_data.txt")
         record_tree_to_file_animal.print_tree_indented(root)
     except FileNotFoundError:
         root = Tree("bird")
-#loop until user quits
+    # loop until user quits
     while True:
         print()
-        print(record_tree_to_file_animal.from_tree_to_list(root))
         if not yes("Are you thinking of an animal? "): break
 
         # walk the tree
@@ -31,20 +31,20 @@ def animal():
             else:
                 tree = tree.left
 
-        #make a guess
+        # make a guess
         guess = tree.cargo
         prompt = "Is it a " + guess + "? "
         if yes(prompt):
             print("I rule!")
             continue
 
-        #get new information
+        # get new information
         prompt = "What is the animal's name? "
         animal = input(prompt)
         prompt = "What question would distinguish a {0} from a {1} ? "
         question = input(prompt.format(animal, guess))
 
-        #add new information to the tree
+        # add new information to the tree
         tree.cargo = question
         prompt = "If the animal were {0} the answer would be? "
         if yes(prompt.format(animal)):
@@ -55,6 +55,6 @@ def animal():
             tree.right = Tree(guess)
     # store gained knowledge for future use
     record_tree_to_file_animal.tree_to_file(root, "animal_data.txt")
-    record_tree_to_file_animal.print_tree_indented(root)
+
 
 animal()
