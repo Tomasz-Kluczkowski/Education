@@ -98,3 +98,10 @@ def file_to_tree(file):
 # print_tree_indented(file_tree)
 
 # tree = from_list_to_tree(['can it bark', 'can it sting', 'dog', 'bird', 'moskito'])
+#
+tree = Tree(1, Tree(2), Tree(3))
+cargo_list = from_tree_to_list(tree)
+print(cargo_list)
+
+new_tree = from_list_to_tree(cargo_list)
+print_tree_indented(new_tree)

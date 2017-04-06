@@ -1,13 +1,6 @@
 import record_tree_to_file_animal
+from record_tree_to_file_animal import Tree
 
-class Tree:
-    def __init__(self, cargo, left=None, right=None):
-        self.cargo = cargo
-        self.left = left
-        self.right = right
-
-    def __str__(self):
-        return str(self.cargo)
 
 def yes(ques):
     ans = input(ques).lower()
