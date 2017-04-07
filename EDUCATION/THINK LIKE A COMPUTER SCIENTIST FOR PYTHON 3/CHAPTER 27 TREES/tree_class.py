@@ -7,8 +7,13 @@ class Tree:
     def __str__(self):
         return str(self.cargo)
 
-def print_tree_indented(tree, level=0):
-    if tree is None: return
-    print_tree_indented(tree.right, level + 1)
-    print("  " * level + str(tree.cargo))
-    print_tree_indented(tree.left, level + 1)
+    def print_tree_indented(self, level=0):
+        if self == None: return
+        if self.right == None: return
+        self.left.print_tree_indented(level + 1)
+        print("  " * level + str(self.cargo))
+        if self.right == None: return
+        self.right.print_tree_indented(level + 1)
+
+tree = Tree(1, Tree(2), Tree(3))
+tree.print_tree_indented()

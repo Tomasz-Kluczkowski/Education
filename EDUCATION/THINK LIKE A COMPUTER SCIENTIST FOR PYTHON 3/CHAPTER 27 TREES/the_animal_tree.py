@@ -54,7 +54,9 @@ def animal():
             tree.left = Tree(animal)
             tree.right = Tree(guess)
     # store gained knowledge for future use
-    record_tree_to_file_animal.tree_to_file(root, "animal_data.txt")
+    # if at least initial branches of the root are filled with data
+    if root.left is not None and root.right is not None:
+        record_tree_to_file_animal.tree_to_file(root, "animal_data.txt")
 
 
 animal()

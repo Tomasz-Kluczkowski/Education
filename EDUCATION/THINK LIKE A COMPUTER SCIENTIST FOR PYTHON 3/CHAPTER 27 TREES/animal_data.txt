@@ -1,0 +1,11 @@
+can it bark
+can it sting
+dog
+bird
+mosquito
+None
+None
+None
+None
+None
+None
