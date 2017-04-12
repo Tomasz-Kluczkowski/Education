@@ -1,5 +1,4 @@
 class Employee:
-
     num_of_emps = 0
     raise_amt = 1.04
 
@@ -11,12 +10,10 @@ class Employee:
         Employee.num_of_emps += 1
 
     def fullname(self):
-
-        return  "{} {}".format(self.first, self.last)
+        return "{} {}".format(self.first, self.last)
 
     def apply_raise(self):
         self.pay = int(self.pay * self.raise_amt)
-
 
     @classmethod
     def set_raise_amt(cls, amount):
@@ -25,7 +22,7 @@ class Employee:
     @classmethod
     def from_string(cls, emp_str):
         first, last, pay = emp_str.split("-")
-        return  cls(first, last, pay)
+        return cls(first, last, pay)
 
     @staticmethod
     def is_workday(day):
@@ -52,7 +49,6 @@ new_emp_1 = Employee.from_string(emp_str_1)
 print(new_emp_1.email)
 print(new_emp_1.pay)
 
-
 # print(emp_1.__dict__)
 # print(Employee.__dict__)
 
@@ -69,6 +65,7 @@ print(emp_2.raise_amt)
 print(Employee.num_of_emps)
 
 import datetime
+
 my_date = datetime.date(2016, 7, 11)
 
 print(Employee.is_workday(my_date))

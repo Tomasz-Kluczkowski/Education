@@ -40,6 +40,43 @@ class Tree:
             self.right.print_tree_inorder()
 
 
+        # TODO: convert method below to classmethod for generating trees from lists
+        #add None to the tree if missing elements in the list
+
+    @classmethod
+    def from_list_to_tree(cls, cargo_list):
+        args = []
+        try:
+            for i in range(1, 3):
+                args.append(Tree(cargo_list[i]))
+        except IndexError:
+            pass
+        # if we get empty list generate Tree with None value
+        if not cargo_list:
+            cargo_list.append(None)
+
+        root = Tree(cargo_list[0], *args)
+        del cargo_list[0:3]
+        bot_level = [root.left, root.right]
+        while len(cargo_list) > 0:
+            copy = bot_level[:]
+            for t in copy:
+                if cargo_list[0] == "None":
+                    t.left = None
+                else:
+                    t.left = Tree(cargo_list[0])
+                    bot_level.append(t.left)
+
+                if cargo_list[1] == "None":
+                    t.right = None
+                else:
+                    t.right = Tree(cargo_list[1])
+                    bot_level.append(t.right)
+                del cargo_list[0:2]
+                del bot_level[0]
+        return cls(root.cargo, root.left, root.right)
+
+
 tree = Tree(1, Tree(2), Tree(3))
 
 tree.print_tree_indented()
@@ -48,3 +85,7 @@ print()
 tree.print_tree_postorder()
 print()
 tree.print_tree_inorder()
+
+cargo_list = [1, 2, 3, 4, 5, 6, 7]
+list_tree = Tree.from_list_to_tree(cargo_list)
+list_tree.print_tree_indented()
