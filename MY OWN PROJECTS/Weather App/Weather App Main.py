@@ -39,15 +39,41 @@ Don't like Celsius? Add &units=imperial to the end of the URL of the API to rece
 
 import requests
 
+def question():
+    user_answer = ""
+    while user_answer not in ["y", "yes", "n", "no"]:
+        user_answer = input("Do you want to try again after enabling internet connection? ")
+        if user_answer.lower() in ["y", "yes"]:
+            return True
+        elif user_answer.lower() in ["n", "no"]:
+            return False
+        else:
+            # TODO: find how to clear screen here,
+            # TODO: trying to use ANSI escape code but it does not work
+            print("\x1B[2J")
+            continue
 
+response = {}
 api_key = "fa730d41d41ae83226a227a150d927ac"
-base_url = "http://api.openweathermap.org/data/2.5/weather?q=London,uk&units=metric&APPID="
+base_url = "http://api.openweathermap.org/data/2.5/weather?q={0},uk&units=metric&APPID="
 
 # file_handle = open("weather_dict.txt", "w")
+while not response:
+    location = input("Please enter location: ")
+    try:
+        response = requests.get(base_url.format(location) + api_key)
+    except requests.exceptions.ConnectionError:
+        print("Unable to establish connection. Please connect to the internet")
+        if question():
+            continue
+        else:
+            break
 
-response = requests.get(base_url + api_key)
-weather_dict = response.json()
+
+    weather_dict = response.json()
+    if weather_dict["cod"] == "404":
+        print("Location not found. Please try again.\n")
+        continue
+    for (key, value) in weather_dict.items():
+        print("{0} {1}".format(key, value))
 # file_handle.writelines()
-
-for (key, value) in weather_dict.items():
-    print("{0} {1}".format(key, value))
