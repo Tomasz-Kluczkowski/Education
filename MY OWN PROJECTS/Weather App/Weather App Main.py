@@ -38,6 +38,8 @@ Don't like Celsius? Add &units=imperial to the end of the URL of the API to rece
 """
 
 import requests
+import os
+
 
 def question():
     user_answer = ""
@@ -50,9 +52,10 @@ def question():
         else:
             # TODO: find how to clear screen here,
             # TODO: trying to use ANSI escape code but it does not work
-            print("\x1B[2J")
+            _ = os.system("clr")
             continue
 
+weather_dict = {}
 response = {}
 api_key = "fa730d41d41ae83226a227a150d927ac"
 base_url = "http://api.openweathermap.org/data/2.5/weather?q={0},uk&units=metric&APPID="
@@ -69,11 +72,10 @@ while not response:
         else:
             break
 
-
     weather_dict = response.json()
     if weather_dict["cod"] == "404":
         print("Location not found. Please try again.\n")
         continue
     for (key, value) in weather_dict.items():
         print("{0} {1}".format(key, value))
-# file_handle.writelines()
+        # file_handle.writelines()
