@@ -39,4 +39,4 @@ if is_admin():
     time.sleep(5)
 else:
     # rerun the program with Admin rights
-    ctypes.windll.shell32.ShellExecuteW(None, u"runas", sys.executable, "", None, 1)
+    ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, "", None, 1)
