@@ -40,24 +40,28 @@ Don't like Celsius? Add &units=imperial to the end of the URL of the API to rece
 import requests
 import os
 import string
+import datetime
 
 
 def question():
     user_answer = ""
     while user_answer not in ["y", "yes", "n", "no"]:
-        user_answer = input("Do you want to try again after enabling internet connection? ")
+        user_answer = input("Do you want to try again? ")
         if user_answer.lower() in ["y", "yes"]:
             _ = os.system("cls")
             return True
         elif user_answer.lower() in ["n", "no"]:
             return False
         else:
-            # TODO: find how to clear screen here - can use os.system("cls") for windows
-            # TODO: trying to use ANSI escape code but it does not work
+            # TODO: trying to use ANSI escape code to clear screen and add colors but it does not work
             _ = os.system("cls")
             continue
+
+# here we get rid of unwanted accidentally typed characters
 punctuation = string.punctuation
 translator = str.maketrans('', '', string.punctuation)
+time_conv = datetime.datetime.fromtimestamp
+
 w_d = {}
 response = {}
 api_key = "fa730d41d41ae83226a227a150d927ac"
@@ -80,19 +84,31 @@ while not response:
     w_d = response.json()
     if w_d["cod"] != 200:
         print("Error: {0}".format(w_d["cod"]), w_d["message"], "\n")
-    # if w_d["cod"] == "404":
-    #     print("Location not found. Please try again.\n")
-    #     continue
-    # elif w_d["cod"] == "401":
-    #     print("\n")
-    #     continue
+        if question():
+            continue
+        else:
+            break
+    print()
     print("Weather report for: {0}, {1}, lon: {2}, lat: {3}\n".
           format(w_d["name"], w_d["sys"]["country"],
                  w_d["coord"]["lon"], w_d["coord"]["lat"]))
 
     print("Weather type: {0}, {1}".format(w_d["weather"][0]["main"].lower(), w_d["weather"][0]["description"]))
+    print("Cloud coverage: {0}%".format(w_d["clouds"]["all"]))
     print("Current temperature: {0} degC".format(w_d["main"]["temp"]))
+    print("Current minimum temperature: {0} degC".format(w_d["main"]['temp_min']))
+    print("Current maximum temperature: {0} degC".format(w_d["main"]['temp_max']))
+    print("Pressure: {0} hPa".format(w_d["main"]["pressure"]))
+    print("Humidity: {0}%".format(w_d["main"]["humidity"]))
+    print("Visibility: {0} m".format(w_d["visibility"]))
+    print()
+    print("Wind speed: {0} m/s".format(w_d["wind"]["speed"]))
+    print("Wind direction: {0} deg".format(w_d["wind"]["deg"]))
+    print()
+    print("Sunrise at: {0}".format(time_conv(w_d["sys"]["sunrise"]).strftime("%H:%M")))
+    print("Sunset at: {0}".format(time_conv(w_d["sys"]["sunset"]).strftime("%H:%M")))
 
-    for (key, value) in w_d.items():
-        print("{0} {1}".format(key, value))
-        # file_handle.writelines()
+    print()
+    # for (key, value) in w_d.items():
+    #     print("{0} {1}".format(key, value))
+    #     # file_handle.writelines()
