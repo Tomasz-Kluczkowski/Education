@@ -57,6 +57,7 @@ def question():
             _ = os.system("cls")
             continue
 punctuation = string.punctuation
+translator = str.maketrans('', '', string.punctuation)
 w_d = {}
 response = {}
 api_key = "fa730d41d41ae83226a227a150d927ac"
@@ -66,7 +67,7 @@ base_url = "http://api.openweathermap.org/data/2.5/weather?q={0}&units=metric&AP
 while not response:
     _ = os.system("cls")
     location = input("Please enter location: ")
-    location = location.strip(punctuation)
+    location = location.translate(translator)
     try:
         response = requests.get(base_url.format(location) + api_key)
     except requests.exceptions.ConnectionError:

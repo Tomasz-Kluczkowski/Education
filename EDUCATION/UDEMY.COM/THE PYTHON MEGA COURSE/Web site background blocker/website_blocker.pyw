@@ -13,7 +13,8 @@ def is_admin():
 if is_admin():
 
     # hosts_temp = r"hosts"
-    hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
+    # hosts_path = r"C:\Windows\System32\drivers\etc\hosts"
+    hosts_path = r"hosts"
     redirect_IP = "127.0.0.1"
     websites_to_block = ["www.facebook.com", "facebook.com", "https://outlook.live.com/owa/", "outlook.live.com"]
 
@@ -39,4 +40,4 @@ if is_admin():
     time.sleep(5)
 else:
     # rerun the program with Admin rights
-    ctypes.windll.shell32.ShellExecuteW(None, u"runas", sys.executable, "", None, 1)
+    ctypes.windll.shell32.ShellExecuteW(None, u"runas", sys.executable, sys.argv[0], None, 1)
