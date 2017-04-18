@@ -39,6 +39,7 @@ Don't like Celsius? Add &units=imperial to the end of the URL of the API to rece
 
 import requests
 import os
+import string
 
 
 def question():
@@ -46,23 +47,26 @@ def question():
     while user_answer not in ["y", "yes", "n", "no"]:
         user_answer = input("Do you want to try again after enabling internet connection? ")
         if user_answer.lower() in ["y", "yes"]:
+            _ = os.system("cls")
             return True
         elif user_answer.lower() in ["n", "no"]:
             return False
         else:
-            # TODO: find how to clear screen here,
+            # TODO: find how to clear screen here - can use os.system("cls") for windows
             # TODO: trying to use ANSI escape code but it does not work
-            _ = os.system("clr")
+            _ = os.system("cls")
             continue
-
-weather_dict = {}
+punctuation = string.punctuation
+w_d = {}
 response = {}
 api_key = "fa730d41d41ae83226a227a150d927ac"
-base_url = "http://api.openweathermap.org/data/2.5/weather?q={0},uk&units=metric&APPID="
+base_url = "http://api.openweathermap.org/data/2.5/weather?q={0}&units=metric&APPID="
 
 # file_handle = open("weather_dict.txt", "w")
 while not response:
+    _ = os.system("cls")
     location = input("Please enter location: ")
+    location = location.strip(punctuation)
     try:
         response = requests.get(base_url.format(location) + api_key)
     except requests.exceptions.ConnectionError:
@@ -72,10 +76,22 @@ while not response:
         else:
             break
 
-    weather_dict = response.json()
-    if weather_dict["cod"] == "404":
-        print("Location not found. Please try again.\n")
-        continue
-    for (key, value) in weather_dict.items():
+    w_d = response.json()
+    if w_d["cod"] != 200:
+        print("Error: {0}".format(w_d["cod"]), w_d["message"], "\n")
+    # if w_d["cod"] == "404":
+    #     print("Location not found. Please try again.\n")
+    #     continue
+    # elif w_d["cod"] == "401":
+    #     print("\n")
+    #     continue
+    print("Weather report for: {0}, {1}, lon: {2}, lat: {3}\n".
+          format(w_d["name"], w_d["sys"]["country"],
+                 w_d["coord"]["lon"], w_d["coord"]["lat"]))
+
+    print("Weather type: {0}, {1}".format(w_d["weather"][0]["main"].lower(), w_d["weather"][0]["description"]))
+    print("Current temperature: {0} degC".format(w_d["main"]["temp"]))
+
+    for (key, value) in w_d.items():
         print("{0} {1}".format(key, value))
         # file_handle.writelines()
