@@ -70,6 +70,9 @@ base_url = "http://api.openweathermap.org/data/2.5/weather?q={0}&units=metric&AP
 # file_handle = open("weather_dict.txt", "w")
 while not response:
     _ = os.system("cls")
+    # TODO: MAIN MENU - CURRENT, DAILY, 5 DAY FORECAST. UNIT SELECTION (METRIC, STANDARD, IMPERIAL).
+    # TODO: TEMP ETC. PLOTTING FROM MATPLOTLIB
+
     location = input("Please enter location: ")
     location = location.translate(translator)
     try:
