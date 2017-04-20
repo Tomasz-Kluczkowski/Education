@@ -57,6 +57,9 @@ def question():
             _ = os.system("cls")
             continue
 
+def clear_screen():
+    _ = os.system("cls")
+
 # here we get rid of unwanted accidentally typed characters
 punctuation = string.punctuation
 translator = str.maketrans('', '', string.punctuation)
@@ -65,18 +68,32 @@ time_conv = datetime.datetime.fromtimestamp
 w_d = {}
 response = {}
 api_key = "fa730d41d41ae83226a227a150d927ac"
-base_url = "http://api.openweathermap.org/data/2.5/weather?q={0}&units=metric&APPID="
+base_url = "http://api.openweathermap.org/data/2.5/{0}?q={1}&units=metric&APPID="
+forecast_type = None
 
 # file_handle = open("weather_dict.txt", "w")
 while not response:
-    _ = os.system("cls")
+    clear_screen()
     # TODO: MAIN MENU - CURRENT, DAILY, 5 DAY FORECAST. UNIT SELECTION (METRIC, STANDARD, IMPERIAL).
     # TODO: TEMP ETC. PLOTTING FROM MATPLOTLIB
+    while forecast_type not in ["c", "d", "f"]:
+        clear_screen()
+        print("MAIN MENU")
+        forecast_type = input("Please select forecast type. Press  c for current,"
+                              " d for daily, f for five days forecast: ")
+
+    if forecast_type == "c":
+        forecast_type = "weather"
+    elif forecast_type == "d":
+        forecast_type = "daily"
+    else:
+        forecast_type = "forecast"
 
     location = input("Please enter location: ")
     location = location.translate(translator)
+
     try:
-        response = requests.get(base_url.format(location) + api_key)
+        response = requests.get(base_url.format(forecast_type, location) + api_key)
     except requests.exceptions.ConnectionError:
         print("Unable to establish connection. Please connect to the internet")
         if question():
