@@ -9,6 +9,12 @@ Example of API call
 
 api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=fa730d41d41ae83226a227a150d927ac
 
+5 days 3 hours call:
+api.openweathermap.org/data/2.5/forecast?q=London,us&mode=xml
+
+16 days daily call:
+api.openweathermap.org/data/2.5/forecast/daily?q=London&mode=xml&units=metric&cnt=7
+
 API documentation
 http://openweathermap.org/api
 
