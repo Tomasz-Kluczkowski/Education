@@ -108,7 +108,8 @@ while not response:
             break
 
     w_d = response.json()
-    if w_d["cod"] != 200:
+    # had to add int(w_d["cod]) as the output from API is int (for current) or string (for longer forcests)
+    if int(w_d["cod"]) != 200:
         print("Error: {0}".format(w_d["cod"]), w_d["message"], "\n")
         if question():
             continue
