@@ -86,14 +86,14 @@ while not response:
         clear_screen()
         print("MAIN MENU")
         forecast_type = input("Please select forecast type. Press  c for current,"
-                              " d for daily, f for five days forecast: ")
+                              " d for 5 days 3 hours report, f for 16 days daily forecast: ")
 
     if forecast_type == "c":
         forecast_type = "weather"
     elif forecast_type == "d":
-        forecast_type = "daily"
-    else:
         forecast_type = "forecast"
+    else:
+        forecast_type = "forecast/daily"
 
     location = input("Please enter location: ")
     location = location.translate(translator)
