@@ -2,7 +2,7 @@ from tkinter import *
 from book_database_backend_OOP import Database
 
 
-class GUI_book_store(Tk):
+class GuiBookStore(Tk):
     def __init__(self):
         super().__init__()
             
@@ -40,82 +40,56 @@ class GUI_book_store(Tk):
         self.sb1 = Scrollbar(self)
         self.sb1.grid(row=2, column=2, rowspan=6)
     
-        self.list1.configure(yscrollcommand=sb1.set)
-        self.sb1.configure(command=list1.yview)
-    
-        self.list1.bind("<<ListboxSelect>>", get_selected_row)
+        self.list1.configure(yscrollcommand=self.sb1.set)
+        self.sb1.configure(command=self.list1.yview)
+
+        self.list1.bind("<<ListboxSelect>>", self.get_selected_row)
 
         button_names = ["View all", "Search entry", "Add entry", "Update selected", "Delete selected", "Close"]
-        command_list = [view_command, search_command, add_command, update_command, delete_command, self.destroy]
+        command_list = [self.view_command, self.search_command, self.add_command, self.update_command,
+                        self.delete_command, self.destroy]
         self.buttons = {}
 
         for button_name, command, row in zip(button_names, command_list, range(2, 8)):
             self.buttons[button_name] = Button(self, text=button_name, width=12, command=command)
             self.buttons[button_name].grid(row=row, column=3)
 
-        # b1 = Button(self, text="View all", width=12, command=view_command)
-        # b1.grid(row=2, column=3)
-        #
-        # b2 = Button(self, text="Search entry", width=12, command=search_command)
-        # b2.grid(row=3, column=3)
-        #
-        # b3 = Button(self, text="Add entry", width=12, command=add_command)
-        # b3.grid(row=4, column=3)
-        #
-        # b4 = Button(self, text="Update selected", width=12, command=update_command)
-        # b4.grid(row=5, column=3)
-        #
-        # b5 = Button(self, text="Delete selected", width=12, command=delete_command)
-        # b5.grid(row=6, column=3)
-        #
-        # b6 = Button(self, text="Close", width=12, command=self.destroy)
-        # b6.grid(row=7, column=3)
+    def get_selected_row(self, event):
+        global selected_tuple
+        try:
+            index = self.list1.curselection()[0]
+            selected_tuple = self.list1.get(index)
+            for i, entry in enumerate([self.e1, self.e2, self.e3, self.e4]):
+                entry.delete(0, END)
+                entry.insert(END, selected_tuple[i+1])
+        except IndexError:
+            pass
 
+    def view_command(self):
+        self.list1.delete(0, END)
+        for row in database.view():
+            self.list1.insert(END, row)
 
+    def search_command(self):
+        self.list1.delete(0, END)
+        for row in database.search(self.title_text.get(), self.author_text.get(), self.year_text.get(),
+                                   self.isbn_text.get()):
+            self.list1.insert(END, row)
 
-# def get_selected_row(event):
-#     global selected_tuple
-#     try:
-#         index = list1.curselection()[0]
-#         selected_tuple = list1.get(index)
-#         e1.delete(0, END)
-#         e1.insert(END, selected_tuple[1])
-#         e2.delete(0, END)
-#         e2.insert(END, selected_tuple[2])
-#         e3.delete(0, END)
-#         e3.insert(END, selected_tuple[3])
-#         e4.delete(0, END)
-#         e4.insert(END, selected_tuple[4])
-#     except IndexError:
-#         pass
-#
-#
-# def view_command():
-#     list1.delete(0, END)
-#     for row in database.view():
-#         list1.insert(END, row)
-#
-#
-# def search_command():
-#     list1.delete(0, END)
-#     for row in database.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
-#         list1.insert(END, row)
-#
-#
-# def add_command():
-#     database.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
-#     list1.delete(0, END)
-#     list1.insert(END, (title_text.get(), author_text.get(), year_text.get(), isbn_text.get()))
-#
-#
-# def delete_command():
-#     database.delete(selected_tuple[0])
-#
-#
-# def update_command():
-#     database.update(selected_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    def add_command(self):
+        database.insert(self.title_text.get(), self.author_text.get(), self.year_text.get(), self.isbn_text.get())
+        self.list1.delete(0, END)
+        self.list1.insert(END, (self.title_text.get(), self.author_text.get(), self.year_text.get(), self.
+                                isbn_text.get()))
+
+    def delete_command(self):
+        database.delete(selected_tuple[0])
+
+    def update_command(self):
+        database.update(selected_tuple[0], self.title_text.get(), self.author_text.get(), self.year_text.get(),
+                        self.isbn_text.get())
 
 
 database = Database("books.db")
-app = GUI_book_store()
+app = GuiBookStore()
 app.mainloop()
