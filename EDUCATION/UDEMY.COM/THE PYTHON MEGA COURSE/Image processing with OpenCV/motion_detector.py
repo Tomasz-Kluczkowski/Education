@@ -20,6 +20,7 @@ while True:
 
     cv2.imshow("Gray frame", gray)
     cv2.imshow("Delta frame", delta_frame)
+    cv2.imshow("Thresh delta", thresh_delta)
 
     key = cv2.waitKey(1)
     if key == ord("q"):
