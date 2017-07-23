@@ -4,6 +4,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 from send_email import send_email
 from sqlalchemy import func
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 local_database = 'postgresql://postgres:postgres123@localhost/height_collector'
@@ -29,17 +30,12 @@ def index():
 @app.route("/success", methods=['POST'])
 def success():
     if request.method == 'POST':
-        email = request.form["email_name"]
-        height = request.form["height_name"]
-        if db.session.query(Data).filter(Data.email == email).count() == 0:
-            data = Data(email, height)
-            db.session.add(data)
-            db.session.commit()
-            average_height = db.session.query(func.avg(Data.height)).scalar()
-            average_height = round(average_height)
-            count = db.session.query(Data.height).count()
-            send_email(email, height, average_height, count)
-            return render_template("success.html")
+        file = request.files["file"]
+        content = file.read()
+        file.save(secure_filename("uploaded" + file.filename))
+        with open("uploaded" + file.filename, "a") as f:
+            f.write("This was added later!")
+        return render_template("index.html", btn="download.html")
     return render_template("index.html",
                            text="Sorry, email address already in use.")
 
