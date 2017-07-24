@@ -1,6 +1,6 @@
 # coding=utf-8
 
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_file
 from flask_sqlalchemy import SQLAlchemy
 from send_email import send_email
 from sqlalchemy import func
@@ -30,14 +30,18 @@ def index():
 @app.route("/success", methods=['POST'])
 def success():
     if request.method == 'POST':
+        global file
         file = request.files["file"]
         content = file.read()
         file.save(secure_filename("uploaded" + file.filename))
         with open("uploaded" + file.filename, "a") as f:
             f.write("This was added later!")
         return render_template("index.html", btn="download.html")
-    return render_template("index.html",
-                           text="Sorry, email address already in use.")
+
+@app.route("/download")
+def download():
+    return send_file("uploaded" + file.filename,
+                     attachment_filename="yourfile.csv", as_attachment=True)
 
 
 if __name__ == "__main__":
